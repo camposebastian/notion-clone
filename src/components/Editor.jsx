@@ -28,7 +28,7 @@ export const Editor = ({ onChange, initialContent, editable }) => {
 
   if (!Array.isArray(parsedContent) || parsedContent.length === 0) {
     console.error("initialContent must be a non-empty array of blocks");
-    return <div>Error: initialContent must be a non-empty array of blocks</div>;
+    return null;
   }
 
   const editor = useCreateBlockNote({
