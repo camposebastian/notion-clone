@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react';
 import {ChevronsLeft, MenuIcon, Plus, PlusCircle, Search, Settings} from 'lucide-react'
 import { useMediaQuery } from 'usehooks-ts';
 import { useParams, usePathname } from 'next/navigation';
