@@ -27,20 +27,7 @@ function Navigation() {
     const navbarRef = useRef(null);
     const [isResetting, setIsResetting] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(isMobile);
-    
-    useEffect(() => {
-        if (isMobile) {
-           colllapse();
-        }else{
-            resetWidth();
-        }
-    }, [isMobile, resetWidth])
-
-    useEffect(() => {
-        if (isMobile) {
-            colllapse();
-        }
-    }, [pathname, isMobile])
+        
 
     const handleMouseDown = (e) => {
         e.preventDefault();
@@ -110,6 +97,20 @@ function Navigation() {
           error: "Could not create document",
         });
     }
+
+    useEffect(() => {
+        if (isMobile) {
+           colllapse();
+        }else{
+            resetWidth();
+        }
+    }, [isMobile, resetWidth])
+
+    useEffect(() => {
+        if (isMobile) {
+            colllapse();
+        }
+    }, [pathname, isMobile])
 
   return (
     <>

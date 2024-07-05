@@ -26,7 +26,7 @@ function Documentpage() {
   return (
     <div className='h-full flex flex-col items-center justify-center space-y-4'>
       <Image
-       src="https://media.istockphoto.com/id/182381290/photo/open-box.jpg?s=612x612&w=0&k=20&c=H1wDEUPrUfDtPRCb2cN87VLzGUrHLdZzj-K4Bxn1eeE=" 
+       src="/emptyBox.jpg" 
        alt="Notion"
        width={300}
        height={300}  
