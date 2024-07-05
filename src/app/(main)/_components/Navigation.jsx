@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import DocumentList from './DocumentList';
 import Navbar from './Navbar';
 
-function navigation() {
+function Navigation() {
     const pathname = usePathname();
     const isMobile = useMediaQuery("(max-width: 768px)");    
     const params = useParams();
@@ -192,4 +192,4 @@ function navigation() {
 
 
 
-export default navigation
+export default Navigation
