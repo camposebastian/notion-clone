@@ -1,12 +1,26 @@
 "use client";
 
+import { BlockNoteSchema, defaultBlockSpecs, filterSuggestionItems, insertOrUpdateBlock, } from "@blocknote/core";
 import "@blocknote/core/fonts/inter.css";
-import { useCreateBlockNote } from "@blocknote/react";
+import { SuggestionMenuController, getDefaultReactSlashMenuItems,useCreateBlockNote } from "@blocknote/react";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-
 import { useEdgeStore } from "@/lib/edgestore";
-import "@blocknote/core/style.css";
+
+import { Alert } from "./Alert";
+import { RiAlertFill } from "react-icons/ri";
+
+const schema = BlockNoteSchema.create({
+  blockSpecs: {
+    // Adds all default blocks.
+    ...defaultBlockSpecs,
+    // Adds the Alert block.
+    alert: Alert,
+  },
+});
+
+
+
 
 export const Editor = ({ onChange, initialContent, editable }) => {
   const { edgestore } = useEdgeStore();
@@ -26,20 +40,46 @@ export const Editor = ({ onChange, initialContent, editable }) => {
         },
       ];
 
-/*   if (!Array.isArray(parsedContent) || parsedContent.length === 0) {
-    console.error("initialContent must be a non-empty array of blocks");
-    return null;
-  } */
+  const insertAlert = (editor) => ({
+    title: "Alert",
+    onItemClick: () => {
+      insertOrUpdateBlock(editor, {
+        type: "alert",
+      });
+    },
+    aliases: [
+      "alert",
+      "notification",
+      "emphasize",
+      "warning",
+      "error",
+      "info",
+      "success",
+    ],
+    group: "Other",
+    icon: <RiAlertFill />,
+  });
 
   const editor = useCreateBlockNote({
-    editable,
+    schema,
     initialContent: parsedContent,
     uploadFile: hadleUpload,
   });
 
   return (
     <div>
-      <BlockNoteView editor={editor} theme="light" onChange={onChange} />
+      <BlockNoteView editor={editor} theme="light" onChange={onChange} slashMenu={false}>
+      <SuggestionMenuController
+        triggerCharacter={"/"}
+        getItems={async (query) =>
+          // Gets all default slash menu items and `insertAlert` item.
+          filterSuggestionItems(
+            [...getDefaultReactSlashMenuItems(editor), insertAlert(editor)],
+            query
+          )
+        }
+      />
+      </BlockNoteView>
     </div>
   );
 };
