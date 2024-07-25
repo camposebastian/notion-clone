@@ -5,6 +5,8 @@ import { api } from "../../../../../../convex/_generated/api"
 import Toolbar from "@/components/Toolbar"
 import Cover from "@/components/Cover"
 import { Editor } from "@/components/Editor"
+import NewEditor from "@/components/NewEditor"
+import { DropdownMenuDemo } from "../_components/drop"
 
 function DocumentIdPage({params}) {
   const document = useQuery(api.documents.getById,{
@@ -44,6 +46,9 @@ function DocumentIdPage({params}) {
         onChange={onChange}
         initialContent={document.content}
         />
+
+        <NewEditor/>
+
       </div>
     </div>
   )
