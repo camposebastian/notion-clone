@@ -54,78 +54,7 @@ function ImageGallery() {
     }
   };
   return (
-    <>
-      {/* <div className="grid grid-cols-3 gap-4">
-      <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-        <div className="text-center">
-          <p className="mx-auto h-12 w-12 text-gray-300">icon</p>
-          <div className="mt-4 flex text-sm leading-6 text-gray-600">
-            <label
-              htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-            >
-              <span>Upload a file</span>
-              <input
-                id="file-upload"
-                name="file-upload"
-                type="file"
-                className="sr-only"
-              />
-            </label>
-            <p className="pl-1">or drag and drop</p>
-          </div>
-          <p className="text-xs leading-5 text-gray-600">
-            PNG, JPG, GIF up to 10MB
-          </p>
-        </div>
-      </div>
-      <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-        <div className="text-center">
-          <p className="mx-auto h-12 w-12 text-gray-300">icon</p>
-          <div className="mt-4 flex text-sm leading-6 text-gray-600">
-            <label
-              htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-            >
-              <span>Upload a file</span>
-              <input
-                id="file-upload"
-                name="file-upload"
-                type="file"
-                className="sr-only"
-              />
-            </label>
-            <p className="pl-1">or drag and drop</p>
-          </div>
-          <p className="text-xs leading-5 text-gray-600">
-            PNG, JPG, GIF up to 10MB
-          </p>
-        </div>
-      </div>
-      <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
-        <div className="text-center">
-          <p className="mx-auto h-12 w-12 text-gray-300">icon</p>
-          <div className="mt-4 flex text-sm leading-6 text-gray-600">
-            <label
-              htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-            >
-              <span>Upload a file</span>
-              <input
-                id="file-upload"
-                name="file-upload"
-                type="file"
-                className="sr-only"
-              />
-            </label>
-            <p className="pl-1">or drag and drop</p>
-          </div>
-          <p className="text-xs leading-5 text-gray-600">
-            PNG, JPG, GIF up to 10MB
-          </p>
-        </div>
-      </div>
-    </div> */}
+    <>      
       <div className="grid grid-cols-1 gap-4 mt-4">
         {images.length === 0 && (
           <div className="flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -190,7 +119,7 @@ function ImageGallery() {
                     <div className="border-b border-[#a7a7a7] p-2 group relative content-center h-[13rem] overflow-hidden">
                       <img
                         src={image.url}
-                        alt={`Preview ${index}`}
+                        alt={image.description}
                         className="max-h-[12rem] m-auto w-full h-full"
                       />
                       <span className="text-[#ffffff00] group-hover:text-black group-hover:bg-white rounded-md absolute bottom-4 left-4 cursor-pointer transition duration-300 ">
@@ -199,18 +128,7 @@ function ImageGallery() {
                           className="w-8 h-8"
                         />
                       </span>
-
-                     {/*  <span className="text-[#ffffff00] group-hover:text-black group-hover:bg-white rounded-md absolute bottom-4 left-16 p-2 cursor-pointer transition duration-300 ">
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          onChange={handleUpdatePicture(index)}
-                        >
-                          <FaPen className="w-4 h-4" />
-                        </input>
-                      </span> */}
-
+                     
                       <label
                         htmlFor={`file-update-${index}`}
                         className="text-[#ffffff00] group-hover:text-black group-hover:bg-white rounded-md absolute bottom-4 left-16 p-2 cursor-pointer transition duration-300"
