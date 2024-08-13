@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
+import Image from "next/image";
 
 function ImageGallery() {
   const [images, setImages] = useState([]);
@@ -92,7 +93,7 @@ function ImageGallery() {
           >
             <div className="relative w-full h-[12rem] overflow-hidden flex position-relative">
               {images.map((image, index) => (
-                <img
+                <Image
                   key={index}
                   className={`border border-black w-[20rem] h-[12rem] absolute bg-white`}
                   style={{ left: `${index * 6}rem` }}
@@ -117,7 +118,7 @@ function ImageGallery() {
                 {images.map((image, index) => (
                   <div key={index} className="border border-[#a7a7a7]">
                     <div className="border-b border-[#a7a7a7] p-2 group relative content-center h-[13rem] overflow-hidden">
-                      <img
+                      <Image
                         src={image.url}
                         alt={image.description}
                         className="max-h-[12rem] m-auto w-full h-full"

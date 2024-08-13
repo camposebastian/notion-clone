@@ -32,7 +32,7 @@ function Documentpage() {
        height={300}  
        />     
        <h2>
-          Welcome {user?.fullName}&apos;s Jotion
+          Welcome {user?.fullName} Jotion
         </h2>  
         <Button onClick={onCreate}>
           <PlusCircle className='w-4 h-4 mr-2' />

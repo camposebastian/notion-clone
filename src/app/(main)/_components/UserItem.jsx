@@ -28,7 +28,7 @@ function UserItem() {
               <AvatarImage src={user?.imageUrl} />
             </Avatar>
             <span className="text-start font-medium line-clamp-1">
-              {user?.fullName}&apos;s Jotion
+              {user?.fullName} Jotion
             </span>
           </div>
 
@@ -53,7 +53,7 @@ function UserItem() {
               </Avatar>
             </div>
             <div className="space-y-1">
-              <p className="text-sm line-clamp-1">{user?.fullName}&apos;s Jotion</p>
+              <p className="text-sm line-clamp-1">{user?.fullName} Jotion</p>
             </div>            
           </div>
         </div>
