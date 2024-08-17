@@ -8,8 +8,8 @@ import H1Component from "@/components/renderizables/H1Component";
 import H2Component from "@/components/renderizables/H2Component";
 import TextComponent from "@/components/renderizables/TextComponent";
 import ImageGallery from "@/components/renderizables/ImageGallery";
-import ImageUnique from "@/components/renderizables/ImageUnique";
-import {  ChevronDown,  ChevronUp,  Image,  Type,  Heading1,  Heading2,  AlignLeft,} from "lucide-react";
+import FrecuenlyQuestions from "@/components/renderizables/FrecuenlyQuestions";
+import {  ChevronDown,  ChevronUp,  Image,  Type,  Heading1,  Heading2,  AlignLeft, FileQuestion } from "lucide-react";
 
 
 function NewEditor() {
@@ -17,7 +17,7 @@ function NewEditor() {
 
   const components = [
     { name: "Galería de Imágenes", icon: Image, component: ImageGallery },
-    { name: "Imagen unica", icon: Image, component: ImageUnique },
+    { name: "F&Q", icon: FileQuestion, component: FrecuenlyQuestions },
     { name: "Texto", icon: Type, component: TextComponent },
     { name: "H1", icon: Heading1, component: H1Component },
     { name: "H2", icon: Heading2, component: H2Component },
