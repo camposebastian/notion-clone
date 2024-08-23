@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
+import Swal from "sweetalert2";
+import { motion, AnimatePresence } from "framer-motion";
 
 function FrecuenlyQuestions() {
   const [frecuentQuestions, setFrecuentQuestions] = useState([
@@ -34,7 +36,7 @@ function FrecuenlyQuestions() {
   const handleAddQuestion = () => {
     setEditingId(null);
     setCreateQuestion(true);
-  };
+  }; 
   const handleSaveCreate = () => {
     const newFrecuentQuestions = [...frecuentQuestions];
     const newId = newFrecuentQuestions.length + 1;
@@ -140,7 +142,7 @@ function FrecuenlyQuestions() {
             <p className="text-center text-gray-500">No records found</p>
           )}
         </div>
-
+        <AnimatePresence>
         {isOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[99999]">
             <div className="bg-white p-6 rounded-lg shadow-xl relative max-w-6xl">
@@ -152,15 +154,16 @@ function FrecuenlyQuestions() {
                       <b>Topic</b> - Frequently Asked Questions
                     </h2>
                   </div>
-                  <div className="flex gap-x-4">
-                  {!createQuestion && (
-                    <button
-                      onClick={handleAddQuestion}
-                      className="border rounded-full py-2 px-4 bg-black text-white font-bold text-sm content-center"
-                    >
-                      Add a Question
-                    </button>
-                  )}
+                  <div className="flex gap-x-4">                    
+                    {!createQuestion && (
+                      <button
+                        onClick={handleAddQuestion}
+                        className="border rounded-full py-2 px-4 bg-black text-white font-bold text-sm content-center"
+                      >
+                        Add a Question
+                      </button>
+                    )}
+
                     <button
                       onClick={togglePopup}
                       className="border-2 rounded-full py-1 px-3 border-black font-bold text-md content-center"
@@ -168,129 +171,136 @@ function FrecuenlyQuestions() {
                       X
                     </button>
                   </div>
-                </div>
-                {createQuestion ? (
-                  <>
-                    <div className="py-4 col-span-6">
-                      <input
-                        type="text"
-                        placeholder="Question"
-                        value={createTitle}
-                        onChange={(e) => setCreateTitle(e.target.value)}
-                        className="w-full border rounded px-2 py-1 mb-2"
-                      />
-                      <textarea
-                        value={createResponse}
-                        placeholder="Response"
-                        onChange={(e) => setCreateResponse(e.target.value)}
-                        className="w-full border rounded px-2 py-1"
-                      />
-                      <div className="flex justify-end gap-2 mt-2">
-                        <button
-                          onClick={handleSaveCreate}
-                          className="bg-black text-white px-4 py-2 rounded"
-                        >
-                          Add a Question
-                        </button>
-                        <button
-                          onClick={handleCancelCreate}
-                          className="bg-gray-500 text-white px-4 py-2 rounded"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#4f4f4f] font-bold text-sm">
-                      <div className="col-span-4">
-                        <p>Question</p>
-                      </div>
-                      <div className="col-span-1">
-                        <p>Created</p>
-                      </div>
-                    </div>
-                    <div className="max-h-96 overflow-y-auto">
-                      {frecuentQuestions.map((item) => (
-                        <div
-                          key={item.id}
-                          className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] font-bold text-sm"
-                        >
-                          <div className="col-span-4">
-                            {editingId === item.id ? (
-                              <>
-                                <input
-                                  type="text"
-                                  value={editingTitle}
-                                  onChange={(e) =>
-                                    setEditingTitle(e.target.value)
-                                  }
-                                  className="w-full border rounded px-2 py-1 mb-2"
-                                />
-                                <textarea
-                                  value={editingResponse}
-                                  onChange={(e) =>
-                                    setEditingResponse(e.target.value)
-                                  }
-                                  className="w-full border rounded px-2 py-1"
-                                />
-                                <div className="flex justify-end gap-2 mt-2">
-                                  <button
-                                    onClick={handleSaveEdit}
-                                    className="bg-black text-white px-4 py-2 rounded"
-                                  >
-                                    Save
-                                  </button>
-                                  <button
-                                    onClick={handleCancelEdit}
-                                    className="bg-gray-500 text-white px-4 py-2 rounded"
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <p>{item.title}</p>
-                                <p className="font-normal text-black truncate">
-                                  {item.response}
-                                </p>
-                              </>
-                            )}
-                          </div>
-
-                          <div className="col-span-1 content-center">
-                            <p>{item.created}</p>
-                          </div>
-                          <div className="col-span-1 flex m-auto gap-x-4">
-                            <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
-                              <FaPen
-                                onClick={() => handleEditQuestion(item.id)}
-                                className="w-4 h-4"
-                              />
-                            </span>
-                            <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
-                              <MdDeleteForever
-                                onClick={() => handleDeleteQuestion(item.id)}
-                                className="w-6 h-6"
-                              />
-                            </span>
-                          </div>
+                </div>                
+                  {createQuestion ? (
+                    <>
+                      <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -20 }}
+                        transition={{ duration: 0.4 }}
+                        className="py-4 col-span-6 w-[950px]" /* 60rem */
+                      >
+                        <input
+                          type="text"
+                          placeholder="Question"
+                          value={createTitle}
+                          onChange={(e) => setCreateTitle(e.target.value)}
+                          className="w-full border rounded px-2 py-1 mb-2"
+                        />
+                        <textarea
+                          value={createResponse}
+                          placeholder="Response"
+                          onChange={(e) => setCreateResponse(e.target.value)}
+                          className="w-full border rounded px-2 py-1"
+                        />
+                        <div className="flex justify-end gap-2 mt-2">
+                          <button
+                            onClick={handleSaveCreate}
+                            className="bg-black text-white px-4 py-2 rounded"
+                          >
+                            Add a Question
+                          </button>
+                          <button
+                            onClick={handleCancelCreate}
+                            className="bg-gray-500 text-white px-4 py-2 rounded"
+                          >
+                            Cancel
+                          </button>
                         </div>
-                      ))}
-                      {frecuentQuestions.length === 0 && (
-                        <p className="text-center text-gray-500">
-                          No records found
-                        </p>
-                      )}
-                    </div>
-                  </>
-                )}
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#4f4f4f] font-bold text-sm">
+                        <div className="col-span-4">
+                          <p>Question</p>
+                        </div>
+                        <div className="col-span-1">
+                          <p>Created</p>
+                        </div>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto">
+                        {frecuentQuestions.map((item) => (
+                          <div
+                            key={item.id}
+                            className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] font-bold text-sm"
+                          >
+                            <div className="col-span-4">
+                              {editingId === item.id ? (
+                                <>
+                                  <input
+                                    type="text"
+                                    value={editingTitle}
+                                    onChange={(e) =>
+                                      setEditingTitle(e.target.value)
+                                    }
+                                    className="w-full border rounded px-2 py-1 mb-2"
+                                  />
+                                  <textarea
+                                    value={editingResponse}
+                                    onChange={(e) =>
+                                      setEditingResponse(e.target.value)
+                                    }
+                                    className="w-full border rounded px-2 py-1"
+                                  />
+                                  <div className="flex justify-end gap-2 mt-2">
+                                    <button
+                                      onClick={handleSaveEdit}
+                                      className="bg-black text-white px-4 py-2 rounded"
+                                    >
+                                      Save
+                                    </button>
+                                    <button
+                                      onClick={handleCancelEdit}
+                                      className="bg-gray-500 text-white px-4 py-2 rounded"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <p>{item.title}</p>
+                                  <p className="font-normal text-black truncate">
+                                    {item.response}
+                                  </p>
+                                </>
+                              )}
+                            </div>
+
+                            <div className="col-span-1 content-center">
+                              <p>{item.created}</p>
+                            </div>
+                            <div className="col-span-1 flex m-auto gap-x-4">
+                              <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
+                                <FaPen
+                                  onClick={() => handleEditQuestion(item.id)}
+                                  className="w-4 h-4"
+                                />
+                              </span>
+                              <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
+                                <MdDeleteForever
+                                  onClick={() => handleDeleteQuestion(item.id)}
+                                  className="w-6 h-6"
+                                />
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                        {frecuentQuestions.length === 0 && (
+                          <p className="text-center text-gray-500">
+                            No records found
+                          </p>
+                        )}
+                      </div>
+                    </>
+                  )}                
               </div>
             </div>
           </div>
         )}
+        </AnimatePresence>
       </div>
     </>
   );
