@@ -30,19 +30,18 @@ function FrecuenlyQuestions({ id, updateEditorContent }) {
   const [createQuestion, setCreateQuestion] = useState(false);
   const [createTitle, setCreateTitle] = useState("");
   const [createResponse, setCreateResponse] = useState("");
-  const [titleQuestion, setTitleQuestion] = useState("");
+  const [titleQuestion, setTitleQuestion] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
 
   const togglePopup = () => setIsOpen(!isOpen);
 
-  const savedEditors = JSON.parse(localStorage.getItem('dashboardEditors'));
-
   useEffect(() => {
-    /* const savedEditors = JSON.parse(localStorage.getItem('dashboardEditors')); */
+    const savedEditors = JSON.parse(localStorage.getItem('dashboardEditors'));
     if(savedEditors.length > 1){
       let penultimoElemento = savedEditors[savedEditors.length - 2];
       setTitleQuestion(penultimoElemento.content.content);            
     }
-  },[savedEditors]);
+  });
 
   const handleAddQuestion = () => {
     setEditingId(null);
@@ -102,8 +101,12 @@ function FrecuenlyQuestions({ id, updateEditorContent }) {
     handleUpdateQuestion(newFrecuentQuestions);
   };
 
+  const handleChangeTitle = (e) => {
+    setNewTitle(e.target.value);    
+  };
+
   const handleUpdateQuestion = (frecuentQuestions) => {
-    updateEditorContent(id, { type: "frecuentQuestions", content: frecuentQuestions });
+    updateEditorContent(id, { type: "frecuentQuestions", content: frecuentQuestions, title: titleQuestion ? newTitle : titleQuestion });
   };
 
   return (
@@ -112,8 +115,9 @@ function FrecuenlyQuestions({ id, updateEditorContent }) {
         <div className="justify-center rounded-lg border border border-gray-900/25 px-6 py-6">
           <div className="pb-4 flex flex-wrap items-center justify-between max-w-screen-xl m-auto mx-auto gap-y-2 border-b-2 border-[#eaeaea]">
             <div>
-              <h2 className="font-bold">                
-                {titleQuestion} - Frequently Asked Questions
+              <h2 className="font-bold flex">   
+                {titleQuestion ? <input className="font-bold outline-none focus:outline-none w-full w-1/3" onChange={handleChangeTitle} value={newTitle} placeholder="Your title here"  /> : titleQuestion}             
+                - Frequently Asked Questions
               </h2>
             </div>
             <div className="flex gap-x-4">
