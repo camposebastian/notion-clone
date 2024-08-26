@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 
-function FrecuenlyQuestions() {
+function FrecuenlyQuestions({ id, updateEditorContent }) {
   const [frecuentQuestions, setFrecuentQuestions] = useState([
     {
       id: 1,
@@ -30,8 +30,19 @@ function FrecuenlyQuestions() {
   const [createQuestion, setCreateQuestion] = useState(false);
   const [createTitle, setCreateTitle] = useState("");
   const [createResponse, setCreateResponse] = useState("");
+  const [titleQuestion, setTitleQuestion] = useState("");
 
   const togglePopup = () => setIsOpen(!isOpen);
+
+  const savedEditors = JSON.parse(localStorage.getItem('dashboardEditors'));
+
+  useEffect(() => {
+    /* const savedEditors = JSON.parse(localStorage.getItem('dashboardEditors')); */
+    if(savedEditors.length > 1){
+      let penultimoElemento = savedEditors[savedEditors.length - 2];
+      setTitleQuestion(penultimoElemento.content.content);            
+    }
+  },[savedEditors]);
 
   const handleAddQuestion = () => {
     setEditingId(null);
@@ -48,6 +59,7 @@ function FrecuenlyQuestions() {
       created: "Aug 1, 2024 12:02 PM",
     });
     setFrecuentQuestions(newFrecuentQuestions);
+    handleUpdateQuestion(newFrecuentQuestions);
     setCreateQuestion(false);
     setCreateTitle("");
     setCreateResponse("");
@@ -71,6 +83,7 @@ function FrecuenlyQuestions() {
         : question
     );
     setFrecuentQuestions(updatedQuestions);
+    handleUpdateQuestion(updatedQuestions);
     setEditingId(null); // Salir del modo de edición
   };
   const handleCancelEdit = () => {
@@ -84,6 +97,13 @@ function FrecuenlyQuestions() {
       (question) => question.id !== id
     );
     setFrecuentQuestions(newFrecuentQuestions);
+
+    // Actualizar el editor con el nuevo estado de frecuentQuestions
+    handleUpdateQuestion(newFrecuentQuestions);
+  };
+
+  const handleUpdateQuestion = (frecuentQuestions) => {
+    updateEditorContent(id, { type: "frecuentQuestions", content: frecuentQuestions });
   };
 
   return (
@@ -92,9 +112,8 @@ function FrecuenlyQuestions() {
         <div className="justify-center rounded-lg border border border-gray-900/25 px-6 py-6">
           <div className="pb-4 flex flex-wrap items-center justify-between max-w-screen-xl m-auto mx-auto gap-y-2 border-b-2 border-[#eaeaea]">
             <div>
-              <h2 className="font-bold">
-                {" "}
-                <b>Topic</b> - Frequently Asked Questions
+              <h2 className="font-bold">                
+                {titleQuestion} - Frequently Asked Questions
               </h2>
             </div>
             <div className="flex gap-x-4">
