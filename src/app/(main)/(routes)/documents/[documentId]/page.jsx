@@ -89,9 +89,9 @@ function DocumentIdPage({params}) {
           initialData={document}
         />
         <Editor initialData={document} onChange={onChange} />
-        {editors.map(editor => (
+        {/* {editors.map(editor => (
           <NewEditor key={editor.id} id={editor.id} components={components} addEditor={addEditor} removeEditor={removeEditor} updateEditorContent={updateEditorContent} />
-        ))}
+        ))} */}
 
       </div>
     </div>
