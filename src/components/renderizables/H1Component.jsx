@@ -1,23 +1,30 @@
-import React, { useState } from 'react';
+/* import React, { useState } from 'react'; */
+import { defaultProps } from "@blocknote/core";
+import { createReactBlockSpec } from "@blocknote/react";
+import { MdAccessibility } from "react-icons/md";
 
-function H1Component({id, updateEditorContent}) {
-    const [text, setText] = useState("Título H1");
-
-    const handleChange = (e) => {
-        setText(e.target.value);
-        updateEditorContent(id, { type: 'h1', content: e.target.value });
-    };
-
-    return(
-        <>
-        <input 
-            type="text" 
-            className="text-4xl font-bold outline-none focus:outline-none w-full" 
-            value={text}  
-            onChange={handleChange}            
-        />        
-        </>
-    )
-}
-
-export default H1Component;
+export const H1Editor = createReactBlockSpec(
+  {
+    type: "h1_test",      
+    propSchema: {        
+      textAlignment: defaultProps.textAlignment,
+      textColor: defaultProps.textColor,
+    },
+    content: "inline",       
+  },
+  {
+    render: (props) => {
+      
+      return (
+        <div>
+          <div
+            className={
+              "inline-content text-4xl font-bold outline-none focus:outline-none w-full"
+            }
+            ref={props.contentRef}
+          />         
+        </div>
+      );
+    },
+  }
+);

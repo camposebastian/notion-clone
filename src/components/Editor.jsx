@@ -16,15 +16,26 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useEdgeStore } from "@/lib/edgestore";
 
-import { Alert } from "./Alert";
 import { RiAlertFill } from "react-icons/ri";
 import { ImImages } from "react-icons/im";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
+import { Image, FileQuestion } from "lucide-react";
+
+import { Alert } from "./Alert";
+import { H1Editor } from "./renderizables/H1Component";
+import { FaqEditor } from "./renderizables/FAQ";
+import { GalleryEditor } from "./renderizables/Gallery";
+import "@/styles/faq.css"
+
+
 
 const schema = BlockNoteSchema.create({
   blockSpecs: {
     // Adds all default blocks.
     ...defaultBlockSpecs,
+    h1_test: H1Editor, // Agrega tu nuevo bloque H1
+    faq: FaqEditor,
+    gallery: GalleryEditor,
     // Adds the Alert block.
     alert: Alert,
   },
@@ -49,28 +60,6 @@ export const Editor = ({ onChange, initialContent, editable }) => {
       ];
 
   // Custom Slash Menu item to insert a block after the current one.
-  const insertHelloWorldItem = (editor) => ({
-    title: "Insert Hello World",
-    onItemClick: () => {
-      // Block that the text cursor is currently in.
-      const currentBlock = editor.getTextCursorPosition().block;
-
-      // New block we want to insert.
-      const helloWorldBlock = {
-        type: "paragraph",
-        content: [
-          { type: "text", text: "Hello World", styles: { bold: true } },
-        ],
-      };
-
-      // Inserting the new block after the current one.
-      editor.insertBlocks([helloWorldBlock], currentBlock, "after");
-    },
-    aliases: ["helloworld", "hw"],
-    group: "Others",
-    icon: <HiOutlineGlobeAlt size={18} />,
-    subtext: "Used to insert a block with 'Hello World' below.",
-  });
   const insertImages = (editor) => ({
     title: "Images", //Alert
     onItemClick: () => {
@@ -111,6 +100,64 @@ export const Editor = ({ onChange, initialContent, editable }) => {
     subtext: "Used to insert an Alert.",
     icon: <RiAlertFill />,
   });
+  const insertHelloWorldItem = (editor) => ({
+    title: "Insert Hello World",
+    onItemClick: () => {
+      // Block that the text cursor is currently in.
+      const currentBlock = editor.getTextCursorPosition().block;
+
+      // New block we want to insert.
+      const helloWorldBlock = {
+        type: "paragraph",
+        content: [
+          { type: "text", text: "Hello World", styles: { bold: true } },
+        ],
+      };
+
+      // Inserting the new block after the current one.
+      editor.insertBlocks([helloWorldBlock], currentBlock, "after");
+    },
+    aliases: ["helloworld", "hw"],
+    group: "Others",
+    icon: <HiOutlineGlobeAlt size={18} />,
+    subtext: "Used to insert a block with 'Hello World' below.",
+  });
+  const insertFaq = (editor) => ({
+    title: "Frecuent Questions",
+
+    onItemClick: () => {
+      insertOrUpdateBlock(editor, {
+        type: "faq",
+      });
+    },   
+    group: "Others",
+    subtext: "Insert Frequently Asked Questions.",
+    icon: <FileQuestion size={18} />,
+  });
+  const insertGallery = (editor) => ({
+    title: "Gallery of images",
+
+    onItemClick: () => {
+      insertOrUpdateBlock(editor, {
+        type: "gallery",
+      });
+    },   
+    group: "Others",
+    subtext: "Insert a group of images.",
+    icon: <Image size={18} />,
+  });
+  const insertH1Block = (editor) => ({
+    title: "H1 Title",
+
+    onItemClick: () => {
+      insertOrUpdateBlock(editor, {
+        type: "h1_test",
+      });
+    },   
+    group: "Text",
+    subtext: "Insert a large heading.",
+    icon: <HiOutlineGlobeAlt size={18} />,
+  });
 
   const editor = useCreateBlockNote({
     schema,
@@ -133,9 +180,12 @@ export const Editor = ({ onChange, initialContent, editable }) => {
             filterSuggestionItems(
               [
                 ...getDefaultReactSlashMenuItems(editor),
+                insertFaq(editor),
+                insertGallery(editor),
                 insertImages(editor),
-                insertAlert(editor),
+                insertAlert(editor),                
                 insertHelloWorldItem(editor),
+                insertH1Block(editor),
               ],
               query
             )

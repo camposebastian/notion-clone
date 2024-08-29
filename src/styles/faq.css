@@ -1,0 +1,6 @@
+.bn-block-content[data-content-type="faq"]{
+    display: block;
+}
+.bn-block-content[data-content-type="gallery"]{
+    display: block;
+}
