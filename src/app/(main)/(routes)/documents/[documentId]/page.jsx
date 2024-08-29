@@ -9,22 +9,22 @@ import { Editor } from "@/components/Editor"
 import NewEditor from "@/components/NewEditor"
 
 /* componentes */
-import ParagraphComponent from "@/components/renderizables/ParagraphComponent";
+/* import ParagraphComponent from "@/components/renderizables/ParagraphComponent";
 import H1Component from "@/components/renderizables/H1Component";
 import H2Component from "@/components/renderizables/H2Component";
 import TextComponent from "@/components/renderizables/TextComponent";
 import ImageGallery from "@/components/renderizables/ImageGallery";
 import FrecuenlyQuestions from "@/components/renderizables/FrecuenlyQuestions";
-import {  ChevronDown,  ChevronUp,  Image,  Type,  Heading1,  Heading2,  AlignLeft, FileQuestion, Trash2 } from "lucide-react";
+import {  ChevronDown,  ChevronUp,  Image,  Type,  Heading1,  Heading2,  AlignLeft, FileQuestion, Trash2 } from "lucide-react"; */
 
-const components = [
+/* const components = [
   { name: "Galería de Imágenes", icon: Image, component: ImageGallery },
   { name: "F&Q", icon: FileQuestion, component: FrecuenlyQuestions },
   { name: "Texto", icon: Type, component: TextComponent },
   { name: "H1", icon: Heading1, component: H1Component },
   { name: "H2", icon: Heading2, component: H2Component },
   { name: "Párrafo", icon: AlignLeft, component: ParagraphComponent },
-];
+]; */
 
 function DocumentIdPage({params}) {
 
