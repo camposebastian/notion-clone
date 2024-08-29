@@ -1,4 +1,3 @@
-/* import React, { useState } from 'react'; */
 import { defaultProps } from "@blocknote/core";
 import { createReactBlockSpec } from "@blocknote/react";
 

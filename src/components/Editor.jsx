@@ -22,7 +22,6 @@ import { HiOutlineGlobeAlt } from "react-icons/hi";
 import { Image, FileQuestion } from "lucide-react";
 
 import { Alert } from "./Alert";
-import { H1Editor } from "./renderizables/H1Component";
 import { FaqEditor } from "./renderizables/FAQ";
 import { GalleryEditor } from "./renderizables/Gallery";
 import "@/styles/faq.css"
@@ -33,7 +32,6 @@ const schema = BlockNoteSchema.create({
   blockSpecs: {
     // Adds all default blocks.
     ...defaultBlockSpecs,
-    h1_test: H1Editor, // Agrega tu nuevo bloque H1
     faq: FaqEditor,
     gallery: GalleryEditor,
     // Adds the Alert block.
@@ -146,18 +144,6 @@ export const Editor = ({ onChange, initialContent, editable }) => {
     subtext: "Insert a group of images.",
     icon: <Image size={18} />,
   });
-  const insertH1Block = (editor) => ({
-    title: "H1 Title",
-
-    onItemClick: () => {
-      insertOrUpdateBlock(editor, {
-        type: "h1_test",
-      });
-    },   
-    group: "Text",
-    subtext: "Insert a large heading.",
-    icon: <HiOutlineGlobeAlt size={18} />,
-  });
 
   const editor = useCreateBlockNote({
     schema,
@@ -184,8 +170,7 @@ export const Editor = ({ onChange, initialContent, editable }) => {
                 insertGallery(editor),
                 insertImages(editor),
                 insertAlert(editor),                
-                insertHelloWorldItem(editor),
-                insertH1Block(editor),
+                insertHelloWorldItem(editor),               
               ],
               query
             )
