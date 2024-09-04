@@ -26,6 +26,8 @@ const FaqComponent = (props) => {
     },
   ]);
 
+  const [searchQuestion, setSearchQuestion] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editingTitle, setEditingTitle] = useState("");
@@ -34,6 +36,7 @@ const FaqComponent = (props) => {
   const [createTitle, setCreateTitle] = useState("");
   const [createResponse, setCreateResponse] = useState("");
   const [newTitle, setNewTitle] = useState("");
+  const [toggleId, setToggleId] = useState(null);
 
   const togglePopup = () => setIsOpen(!isOpen);
 
@@ -90,6 +93,29 @@ const FaqComponent = (props) => {
     setFrecuentQuestions(newFrecuentQuestions);
   };
 
+  const handleDeleteAll = () => {
+    setFrecuentQuestions([]);
+  };
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+    setSearchQuery(searchTerm);
+
+    if (searchTerm === "") {
+      setSearchQuestion([]);
+    } else {
+      const filteredQuestions = frecuentQuestions.filter((question) =>
+        question.title.toLowerCase().includes(searchTerm)
+      );
+      setSearchQuestion(filteredQuestions);
+      console.log(filteredQuestions);
+    }
+  };
+
+  const handleToggleDisplay = (id) => {
+    setToggleId(id);
+  };
+
   const handleChangeTitle = (e) => {
     setNewTitle(e.target.value);
   };
@@ -101,24 +127,34 @@ const FaqComponent = (props) => {
           <div className="pb-4 flex flex-wrap items-center justify-between max-w-screen-xl m-auto mx-auto gap-y-2 border-b-2 border-[#eaeaea]">
             <div>
               <h2 className="font-bold flex">
-                Frequently Asked Questions of <span ref={props.contentRef} />
+                {/* <span ref={props.contentRef} /> */}{" "}
+                <span className="font-black pr-2">Topic</span> Frequently Asked
+                Questions
               </h2>
             </div>
             <div className="flex gap-x-4">
-              <span className="block border rounded-full py-2 px-4 bg-[#eaeaea] text-[#4f4f4f] font-bold text-sm content-center">
+              <span className="block border rounded-full py-2 px-6 bg-[#eaeaea] text-[#4f4f4f] font-bold text-sm content-center">
                 {frecuentQuestions.length} Questions
               </span>
               <button
                 onClick={() => {
                   togglePopup();
                 }}
-                className="border rounded-full py-2 px-4 border-black font-bold text-sm content-center"
+                className="border rounded-full py-2 px-6 border-black font-bold text-sm content-center"
               >
                 Manage
               </button>
+              <button
+                onClick={() => {
+                  handleDeleteAll();
+                }}
+                className="border rounded-full py-2 px-6 border-black font-bold text-sm content-center"
+              >
+                Delete All
+              </button>
             </div>
           </div>
-          <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#4f4f4f] font-bold text-sm">
+          <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#898989] font-bold text-sm">
             <div className="col-span-4">
               <p>Question</p>
             </div>
@@ -126,7 +162,7 @@ const FaqComponent = (props) => {
               <p>Created</p>
             </div>
           </div>
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-32 overflow-y-auto">
             {frecuentQuestions.map((item) => (
               <div
                 key={item.id}
@@ -150,7 +186,7 @@ const FaqComponent = (props) => {
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-[99999]">
               <div className="bg-white p-6 rounded-lg shadow-xl relative max-w-6xl">
                 <div className="justify-center">
-                  <div className="pb-4 flex flex-wrap items-center justify-between max-w-screen-xl m-auto mx-auto gap-y-2 border-b-2 border-[#eaeaea] gap-x-4">
+                  <div className="pb-4 flex flex-wrap items-center justify-between max-w-screen-xl m-auto mx-auto gap-y-2 gap-x-4">
                     <div>
                       <h2 className="font-bold">
                         <b>Topic</b> - Frequently Asked Questions
@@ -158,17 +194,30 @@ const FaqComponent = (props) => {
                     </div>
                     <div className="flex gap-x-4">
                       {!createQuestion && (
-                        <button
-                          onClick={handleAddQuestion}
-                          className="border rounded-full py-2 px-4 bg-black text-white font-bold text-sm content-center"
-                        >
-                          Add a Question
-                        </button>
+                        <>
+                          <span className="block border rounded-full py-2 px-6 border-[#eaeaea] bg-white text-[#4f4f4f] font-bold text-sm content-center">
+                            {frecuentQuestions.length} Questions
+                          </span>
+                          {!createQuestion && (
+                            <button
+                              onClick={handleAddQuestion}
+                              className="border rounded-full py-2 px-4 bg-black text-white font-bold text-sm content-center"
+                            >
+                              Add a New
+                            </button>
+                          )}
+                          <input
+                            type="text"
+                            placeholder="Search"
+                            onChange={handleSearch}
+                            className="w-[15rem] border border-[#eaeaea] bg-[#eaeaea] rounded-full px-3 py-1"
+                          />
+                        </>
                       )}
 
                       <button
                         onClick={togglePopup}
-                        className="border-2 rounded-full py-1 px-3 border-black font-bold text-md content-center"
+                        className="border-2 rounded-full py-1 px-3 border-black font-black text-md content-center"
                       >
                         X
                       </button>
@@ -181,120 +230,210 @@ const FaqComponent = (props) => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.4 }}
-                        className="py-4 col-span-6 w-[950px]" //60rem
+                        className="col-span-6 w-[54rem]"
                       >
-                        <input
-                          type="text"
-                          placeholder="Question"
-                          value={createTitle}
-                          onChange={(e) => setCreateTitle(e.target.value)}
-                          className="w-full border rounded px-2 py-1 mb-2"
-                        />
-                        <textarea
-                          value={createResponse}
-                          placeholder="Response"
-                          onChange={(e) => setCreateResponse(e.target.value)}
-                          className="w-full border rounded px-2 py-1"
-                        />
-                        <div className="flex justify-end gap-2 mt-2">
-                          <button
-                            onClick={handleSaveCreate}
-                            className="bg-black text-white px-4 py-2 rounded"
-                          >
-                            Add a Question
-                          </button>
-                          <button
-                            onClick={handleCancelCreate}
-                            className="bg-gray-500 text-white px-4 py-2 rounded"
-                          >
-                            Cancel
-                          </button>
-                        </div>
+                        <>
+                          <span className="font-black text-black pb-2 block">
+                            Question
+                          </span>
+                          <input
+                            type="text"
+                            value={createTitle}
+                            onChange={(e) => setCreateTitle(e.target.value)}
+                            placeholder="Question"
+                            className="w-full border rounded-lg bg-[#eaeaea] px-2 py-4 mb-2"
+                          />
+
+                          <span className="font-black text-black pb-2 block">
+                            Answer
+                          </span>
+                          <textarea
+                            value={createResponse}
+                            placeholder="Response"
+                            onChange={(e) => setCreateResponse(e.target.value)}
+                            className="w-full border rounded-lg bg-[#eaeaea] px-2 py-1"
+                          />
+                          <div className="flex justify-center gap-2 mt-2">
+                            <button
+                              disabled={!createTitle || !createResponse}
+                              onClick={handleSaveCreate}
+                              className="bg-black text-white px-6 py-2 rounded-full"
+                            >
+                              Save
+                            </button>
+                            <button
+                              onClick={handleCancelCreate}
+                              className="bg-white border border-black text-black px-6 py-2 rounded-full"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </>
                       </motion.div>
                     </>
                   ) : (
                     <>
-                      <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#4f4f4f] font-bold text-sm">
-                        <div className="col-span-4">
-                          <p>Question</p>
-                        </div>
-                        <div className="col-span-1">
-                          <p>Created</p>
-                        </div>
-                      </div>
-                      <div className="max-h-96 overflow-y-auto">
-                        {frecuentQuestions.map((item) => (
-                          <div
-                            key={item.id}
-                            className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] font-bold text-sm"
-                          >
-                            <div className="col-span-4">
-                              {editingId === item.id ? (
-                                <>
-                                  <input
-                                    type="text"
-                                    value={editingTitle}
-                                    onChange={(e) =>
-                                      setEditingTitle(e.target.value)
-                                    }
-                                    className="w-full border rounded px-2 py-1 mb-2"
-                                  />
-                                  <textarea
-                                    value={editingResponse}
-                                    onChange={(e) =>
-                                      setEditingResponse(e.target.value)
-                                    }
-                                    className="w-full border rounded px-2 py-1"
-                                  />
-                                  <div className="flex justify-end gap-2 mt-2">
-                                    <button
-                                      onClick={handleSaveEdit}
-                                      className="bg-black text-white px-4 py-2 rounded"
-                                    >
-                                      Save
-                                    </button>
-                                    <button
-                                      onClick={handleCancelEdit}
-                                      className="bg-gray-500 text-white px-4 py-2 rounded"
-                                    >
-                                      Cancel
-                                    </button>
-                                  </div>
-                                </>
-                              ) : (
-                                <>
-                                  <p>{item.title}</p>
-                                  <p className="font-normal text-black truncate">
-                                    {item.response}
-                                  </p>
-                                </>
-                              )}
-                            </div>
-
-                            <div className="col-span-1 content-center">
-                              <p>{item.created}</p>
-                            </div>
-                            <div className="col-span-1 flex m-auto gap-x-4">
-                              <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
-                                <FaPen
-                                  onClick={() => handleEditQuestion(item.id)}
-                                  className="w-4 h-4"
-                                />
-                              </span>
-                              <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
-                                <MdDeleteForever
-                                  onClick={() => handleDeleteQuestion(item.id)}
-                                  className="w-6 h-6"
-                                />
-                              </span>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="max-h-96 min-h-40 overflow-y-auto">
                         {frecuentQuestions.length === 0 && (
                           <p className="text-center text-gray-500">
                             No records found
                           </p>
                         )}
+                        {searchQuestion.length > 0
+                          ? searchQuestion.map((item) => (
+                              <div
+                                key={item.id}
+                                className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] font-bold text-sm"
+                              >
+                                <div className="col-span-5">
+                                  {editingId === item.id ? (
+                                    <>
+                                      <input
+                                        type="text"
+                                        value={editingTitle}
+                                        onChange={(e) =>
+                                          setEditingTitle(e.target.value)
+                                        }
+                                        className="w-full border rounded px-2 py-1 mb-2"
+                                      />
+                                      <textarea
+                                        value={editingResponse}
+                                        onChange={(e) =>
+                                          setEditingResponse(e.target.value)
+                                        }
+                                        className="w-full border rounded px-2 py-1"
+                                      />
+                                      <div className="flex justify-end gap-2 mt-2">
+                                        <button
+                                          onClick={handleSaveEdit}
+                                          className="bg-black text-white px-4 py-2 rounded"
+                                        >
+                                          Save
+                                        </button>
+                                        <button
+                                          onClick={handleCancelEdit}
+                                          className="bg-gray-500 text-white px-4 py-2 rounded"
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <p>{item.title}</p>
+                                      <p className="font-normal text-black truncate">
+                                        {item.response}
+                                      </p>
+                                    </>
+                                  )}
+                                </div>
+
+                                <div className="col-span-1 flex m-auto gap-x-4">
+                                  <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
+                                    <FaPen
+                                      onClick={() =>
+                                        handleEditQuestion(item.id)
+                                      }
+                                      className="w-4 h-4"
+                                    />
+                                  </span>
+                                  <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
+                                    <MdDeleteForever
+                                      onClick={() =>
+                                        handleDeleteQuestion(item.id)
+                                      }
+                                      className="w-6 h-6"
+                                    />
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : frecuentQuestions.map((item) => (
+                              <div
+                                key={item.id}
+                                className="grid grid-cols-6 gap-4 px-3 py-4 border rounded-lg border-[#eaeaea] font-bold text-sm my-3"
+                              >
+                                {editingId === item.id ? (
+                                  <div
+                                    className="col-span-6 cursor-pointer"
+                                    /* onClick={() => handleToggleDisplay(item.id)} */
+                                  >
+                                    <>
+                                      <span className="font-black text-black pb-2 block">
+                                        Question
+                                      </span>
+                                      <input
+                                        type="text"
+                                        value={editingTitle}
+                                        onChange={(e) =>
+                                          setEditingTitle(e.target.value)
+                                        }
+                                        className="w-full border rounded-lg bg-[#eaeaea] px-2 py-4 mb-2"
+                                      />
+
+                                      <span className="font-black text-black pb-2 block">
+                                        Answer
+                                      </span>
+                                      <textarea
+                                        value={editingResponse}
+                                        onChange={(e) =>
+                                          setEditingResponse(e.target.value)
+                                        }
+                                        className="w-full border rounded-lg bg-[#eaeaea] px-2 py-1"
+                                      />
+                                      <div className="flex justify-center gap-2 mt-2">
+                                        <button
+                                          onClick={handleSaveEdit}
+                                          className="bg-black text-white px-6 py-2 rounded-full"
+                                        >
+                                          Save
+                                        </button>
+                                        <button
+                                          onClick={handleCancelEdit}
+                                          className="bg-white border border-black text-black px-6 py-2 rounded-full"
+                                        >
+                                          Cancel
+                                        </button>
+                                      </div>
+                                    </>
+                                  </div>
+                                ) : (
+                                  <>
+                                    <div
+                                      className="col-span-5 cursor-pointer"
+                                      onClick={() =>
+                                        handleToggleDisplay(item.id)
+                                      }
+                                    >
+                                      <p className="font-bold">{item.title}</p>
+                                      <div
+                                        className={`${toggleId === item.id ? "" : "truncate"} font-normal text-black pt-2`}
+                                      >
+                                        {item.response}
+                                      </div>
+                                    </div>
+                                    <div className="col-span-1 flex m-auto gap-x-4">
+                                      <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
+                                        <FaPen
+                                          onClick={() =>
+                                            handleEditQuestion(item.id)
+                                          }
+                                          className="w-4 h-4"
+                                        />
+                                      </span>
+                                      <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
+                                        <MdDeleteForever
+                                          onClick={() =>
+                                            handleDeleteQuestion(item.id)
+                                          }
+                                          className="w-6 h-6"
+                                        />
+                                      </span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                            ))}
                       </div>
                     </>
                   )}
@@ -315,7 +454,7 @@ export const FaqEditor = createReactBlockSpec(
       textAlignment: defaultProps.textAlignment,
       textColor: defaultProps.textColor,
     },
-    content: "inline", // inline
+    content: "none", // inline
   },
   {
     render: (props) => <FaqComponent {...props} />,
