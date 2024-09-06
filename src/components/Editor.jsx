@@ -19,11 +19,12 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { RiAlertFill } from "react-icons/ri";
 import { ImImages } from "react-icons/im";
 import { HiOutlineGlobeAlt } from "react-icons/hi";
-import { Image, FileQuestion } from "lucide-react";
+import { Image, FileQuestion, Map } from "lucide-react";
 
 import { Alert } from "./Alert";
 import { FaqEditor } from "./renderizables/FAQ";
 import { GalleryEditor } from "./renderizables/Gallery";
+import { MapEditor } from "./renderizables/Map";
 import "@/styles/faq.css"
 
 
@@ -34,6 +35,7 @@ const schema = BlockNoteSchema.create({
     ...defaultBlockSpecs,
     faq: FaqEditor,
     gallery: GalleryEditor,
+    map: MapEditor,
     // Adds the Alert block.
     alert: Alert,
   },
@@ -144,6 +146,18 @@ export const Editor = ({ onChange, initialContent, editable }) => {
     subtext: "Insert a group of images.",
     icon: <Image size={18} />,
   });
+  const insertMap = (editor) => ({
+    title: "Ubication",
+
+    onItemClick: () => {
+      insertOrUpdateBlock(editor, {
+        type: "map",
+      });
+    },   
+    group: "Others",
+    subtext: "Insert map.",
+    icon: <Map size={18} />,
+  });
 
   const editor = useCreateBlockNote({
     schema,
@@ -166,6 +180,7 @@ export const Editor = ({ onChange, initialContent, editable }) => {
             filterSuggestionItems(
               [
                 ...getDefaultReactSlashMenuItems(editor),
+                insertMap(editor),
                 insertFaq(editor),
                 insertGallery(editor),
                 insertImages(editor),
