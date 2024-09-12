@@ -258,15 +258,22 @@ const FaqComponent = (props) => {
                             className="w-full border rounded-lg bg-[#eaeaea] px-2 py-4 mb-2"
                           />
 
-                          <span className="font-black text-black pb-2 block">
-                            Answer
-                          </span>
+                          <div className="flex justify-between mb-2">
+                            <span className="text-left font-black text-black block content-center">
+                              Answer
+                            </span>
+                            <span className="text-right font-semibold text-black py-1 px-8 block border rounded-xl b-[#eaeaea] cursor-pointer text-sm">
+                              Suggest
+                            </span>                            
+                          </div>
+                          
                           <textarea
                             value={createResponse}
                             placeholder="Response"
                             onChange={(e) => setCreateResponse(e.target.value)}
                             className="w-full border rounded-lg bg-[#eaeaea] px-2 py-1"
                           />
+                          
                           <div className="flex justify-center gap-2 mt-2">
                             <button
                               disabled={!createTitle || !createResponse}
