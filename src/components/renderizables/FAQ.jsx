@@ -6,7 +6,9 @@ import { createReactBlockSpec } from "@blocknote/react";
 import React, { useState, useEffect } from "react";
 import { MdDeleteForever } from "react-icons/md";
 import { FaPen } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
 
 const FaqComponent = (props) => {
   const [frecuentQuestions, setFrecuentQuestions] = useState([
@@ -37,6 +39,7 @@ const FaqComponent = (props) => {
   const [createResponse, setCreateResponse] = useState("");
   const [newTitle, setNewTitle] = useState("");
   const [toggleId, setToggleId] = useState(null);
+  const [questionToDelete, setQuestionToDelete] = useState(null);
 
   const togglePopup = () => setIsOpen(!isOpen);
 
@@ -93,6 +96,14 @@ const FaqComponent = (props) => {
     setFrecuentQuestions(newFrecuentQuestions);
   };
 
+  const handleSetToDelete = (id) => {
+    setQuestionToDelete(id);
+  };
+
+  const handleRemoveToDelete = () => {
+    setQuestionToDelete(null);
+  };
+
   const handleDeleteAll = () => {
     setFrecuentQuestions([]);
   };
@@ -134,7 +145,7 @@ const FaqComponent = (props) => {
             </div>
             <div className="flex gap-x-4">
               <span className="block border rounded-full py-2 px-6 bg-[#eaeaea] text-[#4f4f4f] font-bold text-sm content-center">
-                {frecuentQuestions.length} Questions
+                <Image src="/icons/questionnaire-line.png" width={20} height={20} className="inline-block" alt="icon" /> {frecuentQuestions.length} Questions
               </span>
               <button
                 onClick={() => {
@@ -156,10 +167,10 @@ const FaqComponent = (props) => {
           </div>
           <div className="grid grid-cols-6 gap-4 py-4 border-b-2 border-[#eaeaea] text-[#898989] font-bold text-sm">
             <div className="col-span-4">
-              <p>Question</p>
+              <p><Image src="/icons/questionnaire-line.png" width={20} height={20} className="inline-block" alt="icon" /> Question</p>
             </div>
             <div className="col-span-2">
-              <p>Created</p>
+              <p> <Image src="/icons/time-line.png" width={20} height={20} className="inline-block" alt="icon" /> Created</p>
             </div>
           </div>
           <div className="max-h-32 overflow-y-auto">
@@ -203,6 +214,9 @@ const FaqComponent = (props) => {
                               onClick={handleAddQuestion}
                               className="border rounded-full py-2 px-4 bg-black text-white font-bold text-sm content-center"
                             >
+                              <FaPlus color="white" className="text-white inline-block mr-2" />
+
+                              {/* <Image src="/icons/add-line.png" width={20} height={20} className="inline-block" alt="icon" />  */}
                               Add a New
                             </button>
                           )}
@@ -340,7 +354,7 @@ const FaqComponent = (props) => {
                                   <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
                                     <MdDeleteForever
                                       onClick={() =>
-                                        handleDeleteQuestion(item.id)
+                                        handleSetToDelete(item.id)
                                       }
                                       className="w-6 h-6"
                                     />
@@ -348,92 +362,116 @@ const FaqComponent = (props) => {
                                 </div>
                               </div>
                             ))
-                          : frecuentQuestions.map((item) => (
+                          : frecuentQuestions.map((item) => (    
+                            questionToDelete === item.id ? (                        
                               <div
-                                key={item.id}
-                                className="grid grid-cols-6 gap-4 px-3 py-4 border rounded-lg border-[#eaeaea] font-bold text-sm my-3"
-                              >
-                                {editingId === item.id ? (
-                                  <div
-                                    className="col-span-6 cursor-pointer"
-                                    /* onClick={() => handleToggleDisplay(item.id)} */
-                                  >
-                                    <>
-                                      <span className="font-black text-black pb-2 block">
-                                        Question
-                                      </span>
-                                      <input
-                                        type="text"
-                                        value={editingTitle}
-                                        onChange={(e) =>
-                                          setEditingTitle(e.target.value)
-                                        }
-                                        className="w-full border rounded-lg bg-[#eaeaea] px-2 py-4 mb-2"
-                                      />
+                            key={item.id}
+                            className="grid grid-cols-6 gap-4 px-3 py-4 border rounded-lg border-[#eaeaea] bg-[#eaeaea] font-bold text-sm my-3"
+                          >
+                              <>
+                                <div className="col-span-4 content-center">
+                                  <p className="font-bold text-black">Are you sure you want to delete this question?</p>                                  
+                                </div>
+                                <div className="col-span-2 flex m-auto gap-x-4">
+                                  <span className="py-1 px-8 bg-black text-white rounded-md cursor-pointer"
+                                  onClick={() =>
+                                    handleDeleteQuestion(item.id)
+                                  }
+                                  >Yes</span>
 
-                                      <span className="font-black text-black pb-2 block">
-                                        Answer
-                                      </span>
-                                      <textarea
-                                        value={editingResponse}
-                                        onChange={(e) =>
-                                          setEditingResponse(e.target.value)
-                                        }
-                                        className="w-full border rounded-lg bg-[#eaeaea] px-2 py-1"
-                                      />
-                                      <div className="flex justify-center gap-2 mt-2">
-                                        <button
-                                          onClick={handleSaveEdit}
-                                          className="bg-black text-white px-6 py-2 rounded-full"
-                                        >
-                                          Save
-                                        </button>
-                                        <button
-                                          onClick={handleCancelEdit}
-                                          className="bg-white border border-black text-black px-6 py-2 rounded-full"
-                                        >
-                                          Cancel
-                                        </button>
-                                      </div>
-                                    </>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <div
-                                      className="col-span-5 cursor-pointer"
-                                      onClick={() =>
-                                        handleToggleDisplay(item.id)
-                                      }
+                                  <span className="py-1 px-8 bg-black text-white rounded-md cursor-pointer"
+                                  onClick={() =>
+                                    handleRemoveToDelete(item.id)
+                                  }
+                                  >No</span>
+                                                                    
+                                </div>
+                              </>                           
+                            </div>
+                            ) : <div
+                            key={item.id}
+                            className="grid grid-cols-6 gap-4 px-3 py-4 border rounded-lg border-[#eaeaea] font-bold text-sm my-3"
+                          >
+                            {editingId === item.id ? (
+                              <div
+                                className="col-span-6 cursor-pointer"
+                              >
+                                <>
+                                  <span className="font-black text-black pb-2 block">
+                                    Question
+                                  </span>
+                                  <input
+                                    type="text"
+                                    value={editingTitle}
+                                    onChange={(e) =>
+                                      setEditingTitle(e.target.value)
+                                    }
+                                    className="w-full border rounded-lg bg-[#eaeaea] px-2 py-4 mb-2"
+                                  />
+
+                                  <span className="font-black text-black pb-2 block">
+                                    Answer
+                                  </span>
+                                  <textarea
+                                    value={editingResponse}
+                                    onChange={(e) =>
+                                      setEditingResponse(e.target.value)
+                                    }
+                                    className="w-full border rounded-lg bg-[#eaeaea] px-2 py-1"
+                                  />
+                                  <div className="flex justify-center gap-2 mt-2">
+                                    <button
+                                      onClick={handleSaveEdit}
+                                      className="bg-black text-white px-6 py-2 rounded-full"
                                     >
-                                      <p className="font-bold">{item.title}</p>
-                                      <div
-                                        className={`${toggleId === item.id ? "" : "truncate"} font-normal text-black pt-2`}
-                                      >
-                                        {item.response}
-                                      </div>
-                                    </div>
-                                    <div className="col-span-1 flex m-auto gap-x-4">
-                                      <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
-                                        <FaPen
-                                          onClick={() =>
-                                            handleEditQuestion(item.id)
-                                          }
-                                          className="w-4 h-4"
-                                        />
-                                      </span>
-                                      <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
-                                        <MdDeleteForever
-                                          onClick={() =>
-                                            handleDeleteQuestion(item.id)
-                                          }
-                                          className="w-6 h-6"
-                                        />
-                                      </span>
-                                    </div>
-                                  </>
-                                )}
+                                      Save
+                                    </button>
+                                    <button
+                                      onClick={handleCancelEdit}
+                                      className="bg-white border border-black text-black px-6 py-2 rounded-full"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                </>
                               </div>
-                            ))}
+                            ) : (
+                              <>
+                                <div
+                                  className="col-span-5 cursor-pointer"
+                                  onClick={() =>
+                                    handleToggleDisplay(item.id)
+                                  }
+                                >
+                                  <p className="font-bold">{item.title}</p>
+                                  <div
+                                    className={`${toggleId === item.id ? "" : "truncate"} font-normal text-black pt-2`}
+                                  >
+                                    {item.response}
+                                  </div>
+                                </div>
+                                <div className="col-span-1 flex m-auto gap-x-4">
+                                  <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300 content-center">
+                                    <FaPen
+                                      onClick={() =>
+                                        handleEditQuestion(item.id)
+                                      }
+                                      className="w-4 h-4"
+                                    />
+                                  </span>
+                                  <span className="text-black group-hover:text-black group-hover:bg-white rounded-md cursor-pointer transition duration-300">
+                                    <MdDeleteForever
+                                      onClick={() =>
+                                        handleSetToDelete(item.id)
+                                      }
+                                      className="w-6 h-6"
+                                    />
+                                  </span>
+                                </div>
+                              </>
+                            )}                                
+                            </div>
+                          ))}
                       </div>
                     </>
                   )}
